@@ -16,9 +16,10 @@ def main():
         text = 'try again.'
         try:
             if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
-                print('id{}: "{}"'.format(event.user_id, event.text), end=' ')
-                subprocess.check_output('python3 download_video.py -url {}'.format(event.text),
-                                        shell = True)
+                print(f'id{event.user_id}: "{event.text}"', end=' ')
+                subprocess.check_output(
+                    f'python3 download_video.py -url {event.text}', shell=True
+                )
                 vk.messages.send(
                         user_id=event.user_id,
                         random_id=get_random_id(),
@@ -38,8 +39,11 @@ def main():
                         random_id=get_random_id(),
                         message=text)
                 else:
-                    text_main = text[:int(len(text)/4000)*4000]
-                    text_res = text[int(len(text)/4000)*4000:int(len(text)/4000)*4000+int(len(text)%4000)]
+                    text_main = text[:len(text) // 4000 * 4000]
+                    text_res = text[
+                        len(text) // 4000 * 4000 : len(text) // 4000 * 4000
+                        + int(len(text) % 4000)
+                    ]
                     for i in range(0,len(text_main),4000):
                         vk.messages.send(
                             user_id=event.user_id,
