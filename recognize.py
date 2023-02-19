@@ -11,8 +11,7 @@ def get_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('-video', type=str,
                         help='path to audiofile')
-    arguments = parser.parse_args()
-    return arguments
+    return parser.parse_args()
 
 def recognize(wav_filename):
     data, s = librosa.load(wav_filename)
@@ -31,9 +30,9 @@ def recognize(wav_filename):
     except sr.UnknownValueError:
         print("cannot understand audio")
         result = ''
-        os.remove(wav_filename)  
+        os.remove(wav_filename)
     with open('result.txt', 'a', encoding='utf-8') as f:
-        f.write(' {}'.format(result))
+        f.write(f' {result}')
    #  return result
 
 def get_audio(video):
@@ -43,10 +42,10 @@ def get_audio(video):
 def split_into_frames(audiofile):
     data, sr = librosa.load(audiofile)
     duration = librosa.get_duration(data, sr)
-    print('video duration, hours: {}'.format(duration/3600))
+    print(f'video duration, hours: {duration / 3600}')
     for i in range(0,int(duration-1),50):
         tmp_batch = data[(i)*sr:sr*(i+50)]
-        librosa.output.write_wav('samples/{}.wav'.format(chr(int(i/50)+65)), tmp_batch, sr)
+        librosa.output.write_wav(f'samples/{chr(int(i / 50) + 65)}.wav', tmp_batch, sr)
 
 if __name__ == '__main__':
     start = time.time()
@@ -60,5 +59,5 @@ if __name__ == '__main__':
         print(file)   
         recognize(file)
     end = time.time()
-    print('elapsed time: {}'.format(end - start))
+    print(f'elapsed time: {end - start}')
     os.system('rm samples/*')

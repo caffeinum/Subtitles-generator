@@ -8,17 +8,16 @@ def get_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('-url', type=str,
                         help='path to audiofile')
-    arguments = parser.parse_args()
-    return arguments
+    return parser.parse_args()
 
 def download_video(title, url):
-    ydl_opts = {'outtmpl': '{}.%(ext)s'.format(title)}
+    ydl_opts = {'outtmpl': f'{title}.%(ext)s'}
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
 
 if __name__ == '__main__':
     args = get_arguments()
     start = time.time()
-    download_video('tmp',args.url)   
+    download_video('tmp',args.url)
     end = time.time()
-    print('elapsed downloading time: {}'.format(end - start))
+    print(f'elapsed downloading time: {end - start}')
